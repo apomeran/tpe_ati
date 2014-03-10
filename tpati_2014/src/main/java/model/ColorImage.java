@@ -3,6 +3,8 @@ package model;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import model.Image.ColorChannel;
+
 import app.ColorUtilities;
 
 public class ColorImage implements Image, Cloneable {
@@ -46,6 +48,33 @@ public class ColorImage implements Image, Cloneable {
 				ColorUtilities.getGreenFromRGB(rgb));
 		this.setPixel(x, y, ColorChannel.BLUE,
 				ColorUtilities.getBlueFromRGB(rgb));
+	}
+
+	public ColorImage getSingleChannelImage(ColorChannel c) {
+		ColorImage colorImage = new ColorImage(this.getHeight(),
+				this.getWidth(), this.getImageFormat(), this.getType());
+		for (int x = 0; x < this.getWidth(); x++) {
+			for (int y = 0; y < this.getHeight(); y++) {
+				if (c == ColorChannel.RED) {
+					colorImage.red.setPixel(x, y, this.getRGBPixel(x, y));
+					colorImage.green.setPixel(x, y, 0);
+					colorImage.blue.setPixel(x, y, 0);
+				}
+				if (c == ColorChannel.SATURATION) {
+					colorImage.red.setPixel(x, y, 0);
+					colorImage.green.setPixel(x, y, this.getRGBPixel(x, y));
+					colorImage.blue.setPixel(x, y, 0);
+
+				}
+				if (c == ColorChannel.VALUE) {
+					colorImage.red.setPixel(x, y, 0);
+					colorImage.green.setPixel(x, y, 0);
+					colorImage.blue.setPixel(x, y, this.getRGBPixel(x, y));
+
+				}
+			}
+		}
+		return colorImage;
 	}
 
 	public void setPixel(int x, int y, ColorChannel channel, double color) {

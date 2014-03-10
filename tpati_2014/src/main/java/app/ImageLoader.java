@@ -17,7 +17,6 @@ import org.apache.sanselan.Sanselan;
 
 public class ImageLoader {
 
-	// TODO: remove this wire
 	public static File currentFile;
 
 	public static Image loadImage(File arch) throws ImageReadException,
@@ -28,7 +27,7 @@ public class ImageLoader {
 		BufferedImage bi = Sanselan.getBufferedImage(arch);
 		ImageInfo info = Sanselan.getImageInfo(arch);
 		Image.ImageFormat format;
-	
+
 		if (info.getFormat() == ImageFormat.IMAGE_FORMAT_BMP) {
 			format = Image.ImageFormat.BMP;
 		} else if (info.getFormat() == ImageFormat.IMAGE_FORMAT_PGM) {
@@ -66,7 +65,7 @@ public class ImageLoader {
 				k = k + 1;
 			}
 		}
-		
+
 		Image image = new ColorImage(height, width, Image.ImageFormat.RAW,
 				Image.ImageType.GRAYSCALE);
 		for (int i = 0; i < width; i++) {

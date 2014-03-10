@@ -3,8 +3,6 @@ package model;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import model.Image.ColorChannel;
-
 import app.ImageConverter;
 
 public class HSVImage implements Image, Cloneable {
@@ -35,7 +33,6 @@ public class HSVImage implements Image, Cloneable {
 				Color c = new Color(bi.getRGB(x, y));
 				double[] hsv_valuearray = ImageConverter.RGBtoHSV(c.getRed(),
 						c.getGreen(), c.getBlue());
-
 				hue.setPixel(x, y, hsv_valuearray[0]);
 				saturation.setPixel(x, y, hsv_valuearray[1]);
 				value.setPixel(x, y, hsv_valuearray[2]);
@@ -78,6 +75,33 @@ public class HSVImage implements Image, Cloneable {
 			return;
 		}
 		throw new IllegalStateException();
+	}
+
+	public HSVImage getSingleChannelImage(ColorChannel c) {
+		HSVImage hsvImage = new HSVImage(this.getHeight(), this.getWidth(),
+				this.getImageFormat(), this.getType());
+		for (int x = 0; x < this.getWidth(); x++) {
+			for (int y = 0; y < this.getHeight(); y++) {
+				if (c == ColorChannel.HUE) {
+					hsvImage.hue.setPixel(x, y, this.getRGBPixel(x, y));
+					hsvImage.saturation.setPixel(x, y, 0);
+					hsvImage.value.setPixel(x, y, 1);
+				}
+				if (c == ColorChannel.SATURATION) {
+					hsvImage.hue.setPixel(x, y, 0);
+					hsvImage.saturation.setPixel(x, y, this.getRGBPixel(x, y));
+					hsvImage.value.setPixel(x, y, 1);
+
+				}
+				if (c == ColorChannel.VALUE) {
+					hsvImage.hue.setPixel(x, y, 0);
+					hsvImage.saturation.setPixel(x, y, 0);
+					hsvImage.value.setPixel(x, y, this.getRGBPixel(x, y));
+
+				}
+			}
+		}
+		return hsvImage;
 	}
 
 	public int getRGBPixel(int x, int y) {

@@ -11,7 +11,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import model.HSVImage;
 import model.Image;
+import model.Image.ColorChannel;
 
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.ImageWriteException;
@@ -82,11 +84,10 @@ public class Tp0 extends JMenu {
 		loadRaw.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
+
 				JFileChooser selector = new JFileChooser();
 				selector.showOpenDialog(Tp0.this);
 				File arch = selector.getSelectedFile();
-
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				panel.resetImages();
 				if (arch != null) {
@@ -120,12 +121,28 @@ public class Tp0 extends JMenu {
 		RGBtoHSV.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Image HSVImage = ImageConverter
+				HSVImage hsvpicture = (model.HSVImage) ImageConverter
 						.convertRGBImagetoHSVImage((((Window) getTopLevelAncestor())
 								.getPanel().getImage()));
+				// ColorImage colorpicture = (ColorImage) (((Window)
+				// getTopLevelAncestor())
+				// .getPanel().getImage());
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				panel.removeAll();
-				panel.loadImage(HSVImage);
+				panel.loadImage(hsvpicture);
+				panel.loadImage(hsvpicture
+						.getSingleChannelImage(ColorChannel.HUE));
+				panel.loadImage(hsvpicture
+						.getSingleChannelImage(ColorChannel.SATURATION));
+				panel.loadImage(hsvpicture
+						.getSingleChannelImage(ColorChannel.VALUE));
+				// panel.loadImage(colorpicture
+				// .getSingleChannelImage(ColorChannel.RED));
+				// panel.loadImage(colorpicture
+				// .getSingleChannelImage(ColorChannel.GREEN));
+				// panel.loadImage(colorpicture
+				// .getSingleChannelImage(ColorChannel.BLUE));
+
 				panel.repaint();
 
 			}
